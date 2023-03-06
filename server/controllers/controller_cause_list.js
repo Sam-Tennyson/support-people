@@ -1,4 +1,5 @@
 const CauseList = require("../models/cause_list_schema");
+
 module.exports = {
     addCauseNow: async (req, res) =>  {
         const data  = new CauseList(req.body)
