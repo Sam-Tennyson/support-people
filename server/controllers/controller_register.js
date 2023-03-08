@@ -35,7 +35,7 @@ module.exports = {
             const {email, pass} = req.body
             
             const user = await registerService.findOne({ email});
-            if (!commonFunctions.compareHash(pass, user.pass || '')) throw createErrorResponse(MESSAGES.INVALID_USER, ERROR_TYPES.BAD_REQUEST);
+            if (!user || !commonFunctions.compareHash(pass, user.pass || '')) throw createErrorResponse(MESSAGES.INVALID_USER, ERROR_TYPES.BAD_REQUEST);
             const token = await commonFunctions.encryptJwt({ userId: user._id, date: Date.now()});
             res.status(200).json({
                 data: user,
@@ -44,7 +44,7 @@ module.exports = {
             
         } catch(err) {
             console.log(err.message, ">>>>>>>>>>>>>");
-            res.status(400).send("Something went wrong");
+            res.status(400).send({errMgs: err.message});
         }
     },
 }

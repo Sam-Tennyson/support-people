@@ -18,9 +18,10 @@ const RESPONSE = {
           message: msg || '',
           type: 'BAD_REQUEST',
         };
-        // if (data) {
-        //   obj = { ...obj, data };
-        // }
+        if (data) {
+          // obj = { ...obj, data };
+          obj.data = data
+        }
         return obj;
       },
       MONGO_EXCEPTION: (msg) => {

@@ -36,6 +36,7 @@ CONSTANTS.MESSAGES ={
   UNAUTHORIZED: 'Unauthorized access!',
   FORBIDDEN: 'Unrestricted access!',
   LOGGED_IN_SUCCESSFULLY: 'Logged in successfully.',
+  INVALID_USER:"Invalid User Credentials",
   USER_ALREADY_EXISTS: 'An account with this email address already exists.',
   EMAIL_ALREADY_EXISTS: 'Email already exists.',
   INVALID_EMAIL: 'Invalid email address.',
