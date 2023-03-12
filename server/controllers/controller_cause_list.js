@@ -20,8 +20,17 @@ module.exports = {
     },
     getAllCauseListData: async (req, res) => {
         try {
-            const data = await CauseList.find()
-            res.json({data, totalCount: data.length})
+            // const data = await CauseList.find()
+            // res.json({data, totalCount: data.length})
+
+            // With Pagination
+            const limitValue = req.query.limit || 2
+            const skipValue = req.query.skip || 0
+
+            const data = await CauseList.find().limit(limitValue).skip(skipValue)
+            const totalCount = await CauseList.count()
+            res.status(200).json({data, totalCount})
+            
         } catch(err) {
             res.status(500).json({
                 success: false,

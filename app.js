@@ -1,5 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const bodyParser = require('body-parser');
 const routerr = require("./server/routes/cause_routes");
 const auth_router = require("./server/routes/register_route");
 const dotenv = require('dotenv').config()
@@ -7,9 +9,18 @@ const dotenv = require('dotenv').config()
 // set up dependencies
 const app = express();
 const PORT = "7000"
-
-app.use(express.json());
+app.use(cors(), (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173/login");
+    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+    res.setHeader("Access-Control-Allow-Headers", "application/json");
+    next()
+  })
 app.use(express.urlencoded({ extended: true }));
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded())
+
+// parse application/json
+app.use(bodyParser.json())
 
 // // set up mongoose
 mongoose.connect(process.env.MONGODB)
@@ -24,11 +35,12 @@ mongoose.connect(process.env.MONGODB)
 
 mongoose.Promise = global.Promise
 
-app.get('/', (req, res) => {
-   res.status(200).json({
-    "msg": "GoodLuck"
-   })
-})
+// app.get("/", (req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
+//   res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+//   res.setHeader("Access-Control-Allow-Headers", "application/json");
+//   next()
+// });
 
 // // set up route
 app.use('/api/', routerr);
