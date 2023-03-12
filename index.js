@@ -29,7 +29,7 @@ mongoose.connect(process.env.MONGODB)
     console.log('Database connected');
   })
   .catch((error)=> {
-    console.log('Error connecting to database');
+    console.log('Error connecting to database', error);
   }
 );
 
