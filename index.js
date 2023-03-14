@@ -8,7 +8,7 @@ const dotenv = require('dotenv').config()
 
 // set up dependencies
 const app = express();
-const PORT = "7000"
+const PORT = process.env.PORT || "7000"
 app.use(cors(), (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173/login");
     res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
 // // set up mongoose
-mongoose.connect(process.env.MONGODB)
+mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 // mongoose.connect('mongodb+srv://cluster0.qx7vhfd.mongodb.net/myFirstDatabas')
   .then(()=> {
     console.log('Database connected');
