@@ -20,8 +20,6 @@ module.exports = {
     },
     getAllCauseListData: async (req, res) => {
         try {
-            // const data = await CauseList.find()
-            // res.json({data, totalCount: data.length})
 
             // With Pagination
             const limitValue = req.query.limit || 2
