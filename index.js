@@ -6,6 +6,10 @@ const routerr = require("./server/routes/cause_routes");
 const auth_router = require("./server/routes/register_route");
 const dotenv = require('dotenv').config()
 
+const { MongoClient } = require('mongodb');
+
+// const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
 // set up dependencies
 const app = express();
 const PORT = process.env.PORT || "7000"
@@ -23,7 +27,7 @@ app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
 // // set up mongoose
-mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect(process.env.MONGODB)
 // mongoose.connect('mongodb+srv://cluster0.qx7vhfd.mongodb.net/myFirstDatabas')
   .then(()=> {
     console.log('Database connected');
@@ -34,6 +38,31 @@ mongoose.connect(process.env.MONGODB, { useNewUrlParser: true, useUnifiedTopolog
 );
 
 mongoose.Promise = global.Promise
+
+// async function main(){
+//   /**
+//   * Connection URI. Update , <password>, and <your-cluster-url> to reflect your cluster.
+//   * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
+//   */
+//   const uri = "mongodb+srv://samtennyson707:yahOO%40123@cluster0.qx7vhfd.mongodb.net/?retryWrites=true&w=majority";
+//    const client = new MongoClient(uri);
+  
+//     try {
+//       // Connect to the MongoDB cluster
+//       await client.connect();
+    
+//       // Make the appropriate DB calls
+//       await  listDatabases(client);
+    
+//    } catch (e) {
+//       console.error(e);
+//    } finally {
+//       await client.close();
+//     }
+//   }
+ 
+//  main().catch(console.error);
+ 
 
 // app.get("/", (req, res, next) => {
 //   res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
