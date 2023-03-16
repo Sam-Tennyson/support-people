@@ -14,8 +14,8 @@ const { MongoClient } = require('mongodb');
 const app = express();
 const PORT = process.env.PORT || "7000"
 app.use(cors(), (req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173/login");
-    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "application/json");
     next()
   })
@@ -27,9 +27,10 @@ app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
 // // set up mongoose
+
+// mongoose.connect(process.env.MONGODB)
 mongoose.connect(process.env.MONGODB)
-// mongoose.connect('mongodb+srv://cluster0.qx7vhfd.mongodb.net/myFirstDatabas')
-  .then(()=> {
+.then(()=> {
     console.log('Database connected');
   })
   .catch((error)=> {
