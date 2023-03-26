@@ -1,6 +1,6 @@
 const  mongoose  = require("mongoose");
 
-const causeSchema = new mongoose.Schema({
+const CauseListSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
@@ -8,9 +8,13 @@ const causeSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true
-    }
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "RegisterSchema"
+    },
 })
 
-const CauseList=  mongoose.model('CauseList', causeSchema)
+const CauseSchema=  mongoose.model('CauseListSchema', CauseListSchema)
 
-module.exports = CauseList
+module.exports = {CauseSchema}

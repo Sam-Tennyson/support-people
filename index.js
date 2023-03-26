@@ -28,8 +28,8 @@ app.use(bodyParser.json())
 
 // // set up mongoose
 
+mongoose.connect('mongodb://127.0.0.1:27017/supportPeople', { useNewUrlParser: true, useUnifiedTopology: true })
 // mongoose.connect(process.env.MONGODB)
-mongoose.connect(process.env.MONGODB)
 .then(()=> {
     console.log('Database connected');
   })
@@ -39,38 +39,6 @@ mongoose.connect(process.env.MONGODB)
 );
 
 mongoose.Promise = global.Promise
-
-// async function main(){
-//   /**
-//   * Connection URI. Update , <password>, and <your-cluster-url> to reflect your cluster.
-//   * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
-//   */
-//   const uri = "mongodb+srv://samtennyson707:yahOO%40123@cluster0.qx7vhfd.mongodb.net/?retryWrites=true&w=majority";
-//    const client = new MongoClient(uri);
-  
-//     try {
-//       // Connect to the MongoDB cluster
-//       await client.connect();
-    
-//       // Make the appropriate DB calls
-//       await  listDatabases(client);
-    
-//    } catch (e) {
-//       console.error(e);
-//    } finally {
-//       await client.close();
-//     }
-//   }
- 
-//  main().catch(console.error);
- 
-
-// app.get("/", (req, res, next) => {
-//   res.setHeader("Access-Control-Allow-Origin", "http://localhost:5173");
-//   res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
-//   res.setHeader("Access-Control-Allow-Headers", "application/json");
-//   next()
-// });
 
 // // set up route
 app.use('/api/', routerr);
