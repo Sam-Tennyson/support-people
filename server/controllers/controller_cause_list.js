@@ -1,34 +1,61 @@
-const CauseList = require("../models/cause_list_schema");
+
+const JWT = require("jsonwebtoken");
+const causeService = require("../../services/cause_services");
+const registerService = require("../../services/register_services");
+const commonFunctions = require("../../utils/commonFunctions");
+const { CauseSchema } = require("../models/cause_list_schema");
 
 module.exports = {
     addCauseNow: async (req, res) =>  {
-        const data  = new CauseList(req.body)
+        
         try {
-            const newData = await data.save()
-            res.status(201).json({
-                success: true,
-                message: 'New cause created successfully',
-                Cause: newData,
-            });
-        } catch(err) {
-            res.status(500).json({
-                success: false,
-                message: 'Server error. Please try again.',
-                error: err.message,
-            });
+            if(req.headers.authorization && req.headers.authorization.startsWith('Bearer ')){
+                token = req.headers.authorization.split(" ")[1] 
+                let {userId, date, iat} = commonFunctions.decryptJwt(token)
+                let {title, description} = req.body
+                let newData = {
+                    title,
+                    description,
+                    userId
+                } 
+                console.log(newData, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,")
+                const createdCause = await causeService.create(newData)
+                res.status(201).json({
+                    success: true,
+                    createdCause
+                })
+            }
+        } catch(error) {
+            res.status(401).json({
+                message :"Auth Failed",
+                error
+            })
         }
+       
     },
     getAllCauseListData: async (req, res) => {
         try {
-
-            // With Pagination
-            const limitValue = req.query.limit || 2
-            const skipValue = req.query.skip || 0
-
-            const data = await CauseList.find().limit(limitValue).skip(skipValue)
-            const totalCount = await CauseList.count()
-            res.status(200).json({data, totalCount})
             
+            if(req.headers.authorization && req.headers.authorization.startsWith('Bearer ')){
+                token = req.headers.authorization.split(" ")[1] 
+                let {userId, date, iat} = commonFunctions.decryptJwt(token)
+
+                // With Pagination
+                const limitValue = req.query.limit || 2
+                const skipValue = req.query.skip || 0
+                const allValue = req.query.all || 0
+
+                if (allValue) {
+                    const data = await CauseSchema.find().limit(limitValue).skip(skipValue)
+                    const totalCount = await CauseSchema.count()
+                    res.status(200).json({data, totalCount})
+
+                } else {                    
+                    const data = await CauseSchema.find({userId}).limit(limitValue).skip(skipValue)
+                    const totalCount = await CauseSchema.find({userId}).count()
+                    res.status(200).json({data, totalCount})
+                }
+            }
         } catch(err) {
             res.status(500).json({
                 success: false,
@@ -39,7 +66,7 @@ module.exports = {
     },
     getCauseDataById: async (req, res)=> {
         try {
-            const data = await CauseList.findById(req.params.id)
+            const data = await CauseSchema.findById(req.params.id)
             res.json(data)
         } catch(err) {
             res.status(500).json({
@@ -51,7 +78,7 @@ module.exports = {
     },
     updateCauseDataById: async (req, res)=> {
         try {
-            const data = await CauseList.findById(req.params.id)
+            const data = await CauseSchema.findById(req.params.id)
             data.title = req.body.title
             data.description = req.body.description
             res.status(201).json({
@@ -70,7 +97,7 @@ module.exports = {
     
     deleteCauseDataById: async (req, res)=> {
         try {
-            const data = await CauseList.findByIdAndRemove(req.params.id)
+            const data = await CauseSchema.findByIdAndRemove(req.params.id)
             res.status(201).json({
                 success: true,
                 message: 'Data Deleted Successfully',
