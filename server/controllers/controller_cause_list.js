@@ -18,7 +18,7 @@ module.exports = {
                     description,
                     userId
                 } 
-                console.log(newData, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,")
+                // console.log(newData, "<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,")
                 const createdCause = await causeService.create(newData)
                 res.status(201).json({
                     success: true,
@@ -44,17 +44,24 @@ module.exports = {
                 const limitValue = req.query.limit || 2
                 const skipValue = req.query.skip || 0
                 const allValue = req.query.all || 0
-
+                // console.log(allValue)
                 if (allValue) {
-                    const data = await CauseSchema.find().limit(limitValue).skip(skipValue)
+                    const user = await registerService.findOne({ userId});
+                    console.log(user)
+                    const data = await CauseSchema.find().populate('userId').limit(limitValue).skip(skipValue)
                     const totalCount = await CauseSchema.count()
-                    res.status(200).json({data, totalCount})
+                    res.status(200).json({data, totalCount, user})
 
                 } else {                    
                     const data = await CauseSchema.find({userId}).limit(limitValue).skip(skipValue)
                     const totalCount = await CauseSchema.find({userId}).count()
                     res.status(200).json({data, totalCount})
                 }
+            } else {                    
+                res.status(400).json({
+                    success: true,
+                    message: 'Unauthorized access',
+                })
             }
         } catch(err) {
             res.status(500).json({
@@ -82,7 +89,7 @@ module.exports = {
                 token = req.headers.authorization.split(" ")[1] 
                 let {userId, date, iat} = commonFunctions.decryptJwt(token)
                 const {userId: idd} = await CauseSchema.findById(req.params.id)
-                console.log( ">>", userId,  idd.toString())
+                // console.log( ">>", userId,  idd.toString())
 
                 if (idd.toString() == userId) {
                     const data = await CauseSchema.findById(req.params.id)
@@ -125,7 +132,7 @@ module.exports = {
                 token = req.headers.authorization.split(" ")[1] 
                 let {userId, date, iat} = commonFunctions.decryptJwt(token)
                 const {userId: idd} = await CauseSchema.findById(req.params.id)
-                console.log( ">>", userId,  idd)
+                // console.log( ">>", userId,  idd)
 
                 if (idd.toString() == userId) {
                     const data = await CauseSchema.findByIdAndRemove(req.params.id)
@@ -134,10 +141,10 @@ module.exports = {
                         message: 'Data Deleted Successfully',
                         Cause: data,
                     });
-                    console.log("condition success")
+                    // console.log("condition success")
                 } 
                 else {
-                    console.log("condition fail")
+                    // console.log("condition fail")
                     res.status(400).json({
                         success: true,
                         message: 'Unauthorized access',

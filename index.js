@@ -28,8 +28,8 @@ app.use(bodyParser.json())
 
 // // set up mongoose
 
-// mongoose.connect('mongodb://127.0.0.1:27017/supportPeople', { useNewUrlParser: true, useUnifiedTopology: true })
-mongoose.connect(process.env.MONGODB)
+mongoose.connect('mongodb://127.0.0.1:27017/supportPeople', { useNewUrlParser: true, useUnifiedTopology: true })
+// mongoose.connect(process.env.MONGODB)
 .then(()=> {
     console.log('Database connected');
   })

@@ -22,7 +22,6 @@ module.exports = {
                 createdAccount
             });
         } catch (err) {
-            console.log(err.message, "werwer");
             res.status(500).send({
                 errMsg: err.message
             });
@@ -42,7 +41,6 @@ module.exports = {
             });
             
         } catch(err) {
-            console.log(err.message, ">>>>>>>>>>>>>");
             res.status(400).send({errMgs: err.message});
         }
     },
