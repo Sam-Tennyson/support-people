@@ -13,7 +13,11 @@ const CauseListSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "RegisterSchema"
     },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+    bannerImage: {
+        type: String,
+        required: true
+    }
 })
 
 const CauseSchema=  mongoose.model('CauseListSchema', CauseListSchema)
